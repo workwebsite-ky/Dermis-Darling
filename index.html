@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dermis Darling – Premium skincare services for radiant, healthy skin. Professional facials, advanced treatments, and personalized skincare routines." />
+  <meta name="keywords" content="skincare, facial, professional skincare, skin treatment, luxury skincare, dermis darling" />
+  <title>Dermis Darling | Premium Skin Care</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================
+       CSS VARIABLES & RESET
+    =========================== */
+    :root {
+      --sage: #8aab8e;
+      --sage-light: #b4cdb7;
+      --sage-pale: #ddeadf;
+      --blue-muted: #8fa8b8;
+      --blue-pale: #d4e3ec;
+      --beige: #f2ece3;
+      --beige-dark: #e0d5c5;
+      --white: #fafaf8;
+      --text-dark: #2c2c2c;
+      --text-mid: #5a5a5a;
+      --text-light: #8a8a8a;
+      --radius: 2px;
+      --transition: 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ===========================
+       LOADING SCREEN
+    =========================== */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--beige);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1.5rem;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dark);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .loader-bar {
+      width: 120px; height: 1px;
+      background: var(--beige-dark);
+      position: relative; overflow: hidden;
+    }
+    .loader-bar::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--sage);
+      animation: loadBar 1.4s ease infinite;
+    }
+    @keyframes loadBar { to { left: 100%; } }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ===========================
+       NAVIGATION
+    =========================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1.5rem 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background var(--transition), padding var(--transition), box-shadow var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      padding: 1rem 5%;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--text-dark);
+    }
+    .nav-logo span { color: var(--sage); }
+    .nav-links {
+      display: flex; gap: 2.5rem; align-items: center;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--sage);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--text-dark); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.6rem;
+      border: 1px solid var(--sage);
+      color: var(--sage) !important;
+      transition: background var(--transition), color var(--transition) !important;
+    }
+    .nav-cta:hover { background: var(--sage) !important; color: var(--white) !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--text-dark); transition: var(--transition); }
+
+    /* ===========================
+       HERO
+    =========================== */
+    #home {
+      min-height: 100vh;
+      position: relative;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--beige) 0%, var(--sage-pale) 50%, var(--blue-pale) 100%);
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.18;
+    }
+    /* Organic blob shapes */
+    .hero-blob {
+      position: absolute;
+      border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+    }
+    .hero-blob-1 { width: 500px; height: 500px; background: var(--sage-light); top: -100px; right: -100px; }
+    .hero-blob-2 { width: 350px; height: 350px; background: var(--blue-pale); bottom: -80px; left: 10%; }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 12rem 5% 6rem;
+      max-width: 700px;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.9s ease 0.9s forwards;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--sage);
+      color: var(--white);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .btn-primary:hover { background: #6e9272; transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      border: 1px solid var(--text-dark);
+      color: var(--text-dark);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: border-color var(--transition), color var(--transition), transform var(--transition);
+    }
+    .btn-secondary:hover { border-color: var(--sage); color: var(--sage); transform: translateY(-2px); }
+
+    .hero-image-panel {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      width: 42%;
+      overflow: hidden;
+      display: none;
+    }
+    @media(min-width:900px){ .hero-image-panel { display: block; } }
+    .hero-image-panel img {
+      height: 100%;
+      object-position: center top;
+      opacity: 0; animation: fadeIn 1.2s ease 0.4s forwards;
+    }
+    .hero-image-panel::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, var(--beige) 0%, transparent 30%);
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    /* ===========================
+       SECTION SHARED
+    =========================== */
+    section { padding: 7rem 5%; }
+    .section-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text-dark);
+      margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--sage); }
+    .section-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 540px;
+    }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===========================
+       ABOUT STRIP
+    =========================== */
+    #about-strip {
+      background: var(--sage);
+      padding: 4rem 5%;
+      display: flex; align-items: center; justify-content: space-between; gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .strip-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--white);
+      max-width: 600px;
+      line-height: 1.3;
+    }
+    .strip-text em { font-style: italic; }
+    #about-strip .btn-primary { background: var(--white); color: var(--sage); }
+    #about-strip .btn-primary:hover { background: var(--beige); }
+
+    /* ===========================
+       SERVICES
+    =========================== */
+    #services { background: var(--white); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .service-card {
+      background: var(--beige);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--sage);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      font-size: 2rem; margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-mid);
+      font-weight: 300;
+    }
+    .service-card-img {
+      width: 100%; height: 180px;
+      margin-bottom: 1.5rem;
+      object-fit: cover;
+      overflow: hidden;
+    }
+    .service-card-img img { height: 100%; transition: transform 0.6s ease; }
+    .service-card:hover .service-card-img img { transform: scale(1.05); }
+
+    /* ===========================
+       WHY US
+    =========================== */
+    #why-us {
+      background: var(--beige);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media(max-width:768px){ #why-us { grid-template-columns: 1fr; gap: 3rem; } }
+    .why-image {
+      position: relative;
+      height: 550px;
+    }
+    .why-image img {
+      height: 100%;
+      object-position: center top;
+    }
+    .why-image::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; right: -20px;
+      width: 200px; height: 200px;
+      border: 2px solid var(--sage-light);
+      z-index: -1;
+    }
+    .why-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .why-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .why-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--sage);
+      line-height: 1;
+      min-width: 2rem;
+    }
+    .why-item h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    .why-item p { font-size: 0.88rem; line-height: 1.7; color: var(--text-mid); font-weight: 300; }
+
+    /* ===========================
+       PACKAGES / PRICING
+    =========================== */
+    #packages { background: var(--white); }
+    .packages-intro { max-width: 540px; margin-bottom: 3.5rem; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+    .price-card {
+      border: 1px solid var(--beige-dark);
+      padding: 2.5rem;
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .price-card.popular {
+      border-color: var(--sage);
+      background: var(--sage-pale);
+    }
+    .price-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.07); }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--sage);
+      color: var(--white);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+    }
+    .price-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .price-card .tagline {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .price-amount span { font-size: 1.2rem; vertical-align: super; }
+    .price-note { font-size: 0.78rem; color: var(--text-light); margin-bottom: 1.8rem; }
+    .price-features { margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.7rem; }
+    .price-features li {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .price-features li::before {
+      content: '✦';
+      position: absolute; left: 0;
+      color: var(--sage);
+      font-size: 0.55rem;
+      top: 3px;
+    }
+
+    /* ===========================
+       TESTIMONIALS
+    =========================== */
+    #testimonials { background: var(--beige); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .testimonial-card {
+      background: var(--white);
+      padding: 2.2rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      line-height: 0.6;
+      color: var(--sage-pale);
+      position: absolute;
+      top: 1.5rem; left: 1.5rem;
+    }
+    .testimonial-text {
+      font-size: 0.93rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .author-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--sage-pale);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--sage);
+    }
+    .author-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.15rem; }
+    .author-tag { font-size: 0.75rem; color: var(--text-light); font-weight: 300; }
+    .stars { color: var(--sage); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 1rem; }
+
+    /* ===========================
+       STATS BAR
+    =========================== */
+    #stats {
+      background: var(--text-dark);
+      padding: 4rem 5%;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--sage-light);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.5rem;
+    }
+
+    /* ===========================
+       FULL ABOUT PAGE SECTION
+    =========================== */
+    #about {
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media(max-width:768px){ #about { grid-template-columns: 1fr; gap: 3rem; } }
+    .about-image { height: 600px; position: relative; overflow: hidden; }
+    .about-image img { height: 100%; }
+    .about-image-accent {
+      position: absolute; bottom: 2rem; right: -2rem;
+      width: 180px; height: 180px;
+      background: var(--sage-pale);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .accent-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--sage);
+      line-height: 1.4;
+    }
+    .about-content { }
+    .about-lead {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      border-left: 2px solid var(--sage);
+      padding-left: 1.5rem;
+    }
+    .about-body {
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 2rem;
+    }
+    .mission-vision {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .mv-card {
+      background: var(--beige);
+      padding: 1.5rem;
+    }
+    .mv-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      color: var(--sage);
+    }
+    .mv-card p { font-size: 0.85rem; line-height: 1.7; color: var(--text-mid); font-weight: 300; }
+
+    /* ===========================
+       CONTACT
+    =========================== */
+    #contact { background: var(--beige); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      margin-top: 3.5rem;
+    }
+    @media(max-width:768px){ .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .contact-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .contact-item {
+      display: flex; gap: 1rem; margin-bottom: 1.2rem; align-items: flex-start;
+    }
+    .contact-item-icon {
+      width: 38px; height: 38px; min-width: 38px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .contact-item-text p:first-child {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.2rem;
+    }
+    .contact-item-text p:last-child { font-size: 0.93rem; font-weight: 300; }
+    .contact-form { }
+    .form-group { margin-bottom: 1.3rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: var(--white);
+      border: 1px solid var(--beige-dark);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.93rem;
+      font-weight: 300;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--sage); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:500px){ .form-row { grid-template-columns: 1fr; } }
+
+    /* ===========================
+       FAQ
+    =========================== */
+    #faq { background: var(--white); }
+    .faq-list { max-width: 720px; margin-top: 3rem; }
+    .faq-item { border-bottom: 1px solid var(--beige-dark); }
+    .faq-question {
+      width: 100%; text-align: left;
+      padding: 1.4rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem;
+      transition: color var(--transition);
+    }
+    .faq-question:hover { color: var(--sage); }
+    .faq-icon {
+      width: 24px; height: 24px; min-width: 24px;
+      border: 1px solid var(--beige-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--sage);
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--sage); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.2rem; }
+    .faq-answer p { font-size: 0.92rem; line-height: 1.8; color: var(--text-mid); font-weight: 300; }
+
+    /* ===========================
+       CTA BANNER
+    =========================== */
+    #cta-banner {
+      background: linear-gradient(135deg, var(--sage-pale), var(--blue-pale));
+      padding: 6rem 5%;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #cta-banner::before {
+      content: '';
+      position: absolute; top: -50%; left: -20%;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(138,171,142,0.15);
+    }
+    #cta-banner .section-title { margin: 0 auto 1rem; max-width: 600px; }
+    #cta-banner .section-subtitle { margin: 0 auto 2.5rem; text-align: center; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      background: var(--text-dark);
+      padding: 4rem 5% 2rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media(max-width:768px){ .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+    @media(max-width:480px){ .footer-grid { grid-template-columns: 1fr; } }
+    .footer-brand .nav-logo { font-size: 1.8rem; color: var(--white); margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 260px; font-weight: 300; }
+    .footer-col h5 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 300;
+      margin-bottom: 0.6rem;
+      transition: color var(--transition);
+    }
+    .footer-col a:hover { color: var(--sage-light); }
+    .social-links { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .social-link:hover { border-color: var(--sage-light); color: var(--sage-light); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.78rem;
+    }
+
+    /* ===========================
+       BACK TO TOP
+    =========================== */
+    #back-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+      width: 44px; height: 44px;
+      background: var(--sage);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    #back-top.visible { opacity: 1; pointer-events: all; }
+    #back-top:hover { transform: translateY(-3px); }
+
+    /* WhatsApp Floating */
+    #whatsapp-float {
+      position: fixed; bottom: 5.5rem; right: 2rem; z-index: 999;
+      width: 44px; height: 44px;
+      background: #25d366;
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(37,211,102,0.35);
+      transition: transform var(--transition);
+    }
+    #whatsapp-float:hover { transform: scale(1.1); }
+
+    /* ===========================
+       MOBILE NAV
+    =========================== */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 998;
+      background: var(--beige);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--text-dark);
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+    }
+    .mobile-menu a:hover { color: var(--sage); }
+
+    /* ===========================
+       RESPONSIVE
+    =========================== */
+    @media(max-width:900px){
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 9rem 5% 5rem; }
+    }
+    @media(max-width:600px){
+      section { padding: 5rem 5%; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Dermis Darling</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- WHATSAPP -->
+<a id="whatsapp-float" href="https://wa.me/+923000000000" target="_blank" rel="noopener" title="Chat on WhatsApp">&#128172;</a>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="closeMobile()">Home</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#packages" onclick="closeMobile()">Packages</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">Dermis <span>Darling</span></a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HOME / HERO
+     ============================================================ -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">Premium Skin Care Studio</div>
+    <h1 class="hero-title">Your Skin<br>Deserves to<br><em>Flourish</em></h1>
+    <p class="hero-sub">Science-backed skincare rituals tailored for you. We combine clinical precision with luxurious care to reveal your most radiant, healthy skin.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Consultation →</a>
+      <a href="#services" class="btn-secondary">Explore Services</a>
+    </div>
+  </div>
+
+  <div class="hero-image-panel">
+    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80" alt="Luxury skincare treatment" />
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT STRIP
+     ============================================================ -->
+<div id="about-strip" class="reveal">
+  <p class="strip-text">"Gentle on your skin. <em>Extraordinary</em> in results."</p>
+  <a href="#about" class="btn-primary">Our Story →</a>
+</div>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Skin Care <em>Treatments</em></h2>
+    <p class="section-subtitle">From deep-cleansing facials to advanced resurfacing — each treatment is customized to your unique skin profile.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal" style="transition-delay:0.1s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1576426863848-c21f53c60b19?w=600&q=80" alt="Signature Facial" />
+      </div>
+      <h3>Signature Facial</h3>
+      <p>A bespoke 60-minute treatment combining deep cleanse, exfoliation, and hydration masking — customized for your skin type and concerns.</p>
+    </div>
+    <div class="service-card reveal" style="transition-delay:0.15s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&q=80" alt="Chemical Peel" />
+      </div>
+      <h3>Chemical Peel</h3>
+      <p>Professional-grade peels that gently resurface the skin, reducing hyperpigmentation, fine lines, and uneven texture for a luminous glow.</p>
+    </div>
+    <div class="service-card reveal" style="transition-delay:0.2s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=600&q=80" alt="LED Light Therapy" />
+      </div>
+      <h3>LED Light Therapy</h3>
+      <p>Advanced LED panels stimulate collagen production, calm inflammation, and accelerate healing — visible results from the very first session.</p>
+    </div>
+    <div class="service-card reveal" style="transition-delay:0.25s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&q=80" alt="Hydrodermabrasion" />
+      </div>
+      <h3>Hydrodermabrasion</h3>
+      <p>Simultaneously exfoliates and deeply hydrates — extracting impurities while infusing skin with nourishing serums for an instant radiance boost.</p>
+    </div>
+    <div class="service-card reveal" style="transition-delay:0.3s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Anti-Aging Treatment" />
+      </div>
+      <h3>Anti-Aging Ritual</h3>
+      <p>A comprehensive treatment targeting fine lines, loss of firmness, and dullness with potent actives and relaxing lifting massage techniques.</p>
+    </div>
+    <div class="service-card reveal" style="transition-delay:0.35s">
+      <div class="service-card-img">
+        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&q=80" alt="Acne Clarity Facial" />
+      </div>
+      <h3>Acne Clarity Facial</h3>
+      <p>Targeted deep-cleanse and purifying treatment formulated to calm breakouts, regulate sebum, and restore skin balance without stripping moisture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHY US
+     ============================================================ -->
+<section id="why-us">
+  <div class="why-image reveal">
+    <img src="https://images.unsplash.com/photo-1552693673-1bf958298935?w=800&q=80" alt="Professional skin care specialist" />
+    <div class="why-image::after"></div>
+  </div>
+  <div class="reveal" style="transition-delay:0.15s">
+    <div class="section-tag">Why Dermis Darling</div>
+    <h2 class="section-title">The Difference<br>Is in the <em>Details</em></h2>
+    <p class="section-subtitle">We're not just a skincare studio — we're your long-term skin health partners.</p>
+    <ul class="why-list">
+      <li class="why-item">
+        <span class="why-num">01</span>
+        <div>
+          <h4>Personalized Skin Analysis</h4>
+          <p>Every visit begins with a thorough skin consultation. We tailor every treatment to your skin's exact needs — no one-size-fits-all here.</p>
+        </div>
+      </li>
+      <li class="why-item">
+        <span class="why-num">02</span>
+        <div>
+          <h4>Medical-Grade Formulations</h4>
+          <p>We use only clinically-proven, professional-grade products that deliver real, measurable results — not empty promises.</p>
+        </div>
+      </li>
+      <li class="why-item">
+        <span class="why-num">03</span>
+        <div>
+          <h4>Expert Certified Therapists</h4>
+          <p>Our team holds accredited certifications in advanced aesthetics and undergoes continuous training in the latest techniques.</p>
+        </div>
+      </li>
+      <li class="why-item">
+        <span class="why-num">04</span>
+        <div>
+          <h4>A Truly Luxurious Experience</h4>
+          <p>From the moment you enter, every sensory detail is curated for deep relaxation, calm, and indulgence.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS
+     ============================================================ -->
+<div id="stats">
+  <div class="stat-item reveal">
+    <div class="stat-number" data-target="1500">0</div>
+    <div class="stat-label">Happy Clients</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:0.1s">
+    <div class="stat-number" data-target="8">0</div>
+    <div class="stat-label">Years Experience</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:0.2s">
+    <div class="stat-number" data-target="12">0</div>
+    <div class="stat-label">Treatment Types</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:0.3s">
+    <div class="stat-number" data-target="98">0</div>
+    <div class="stat-label">% Satisfaction Rate</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PACKAGES / PRICING
+     ============================================================ -->
+<section id="packages">
+  <div class="packages-intro reveal">
+    <div class="section-tag">Investment in Your Skin</div>
+    <h2 class="section-title">Choose Your <em>Journey</em></h2>
+    <p class="section-subtitle">Thoughtfully crafted packages to suit every skin care goal and lifestyle — from single sessions to complete transformation programs.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal" style="transition-delay:0.1s">
+      <h3>The Essential</h3>
+      <p class="tagline">Perfect introduction to skin care</p>
+      <div class="price-amount"><span>$</span>75</div>
+      <p class="price-note">per session</p>
+      <ul class="price-features">
+        <li>60-min Signature Facial</li>
+        <li>Skin Type Consultation</li>
+        <li>Customized Mask Application</li>
+        <li>Home Care Recommendations</li>
+      </ul>
+      <a href="#contact" class="btn-secondary" style="display:inline-block;width:100%;text-align:center">Book Now</a>
+    </div>
+    <div class="price-card popular reveal" style="transition-delay:0.2s">
+      <div class="popular-badge">Most Popular</div>
+      <h3>The Glow Package</h3>
+      <p class="tagline">Visible transformation in 4 weeks</p>
+      <div class="price-amount"><span>$</span>280</div>
+      <p class="price-note">4-session bundle / save 20%</p>
+      <ul class="price-features">
+        <li>4 x Signature Facials</li>
+        <li>1 x Chemical Peel</li>
+        <li>1 x LED Light Session</li>
+        <li>Priority Booking</li>
+        <li>Complimentary Serum Sample</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="display:inline-block;width:100%;text-align:center">Book Now</a>
+    </div>
+    <div class="price-card reveal" style="transition-delay:0.3s">
+      <h3>The Radiance Ritual</h3>
+      <p class="tagline">Complete 8-week skin transformation</p>
+      <div class="price-amount"><span>$</span>590</div>
+      <p class="price-note">8-session program / save 30%</p>
+      <ul class="price-features">
+        <li>8 x Customized Treatments</li>
+        <li>Hydrodermabrasion + Peel</li>
+        <li>4 x LED Light Sessions</li>
+        <li>Anti-Aging Ritual</li>
+        <li>At-Home Skincare Plan</li>
+        <li>Monthly Progress Review</li>
+      </ul>
+      <a href="#contact" class="btn-secondary" style="display:inline-block;width:100%;text-align:center">Book Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section id="testimonials">
+  <div class="reveal">
+    <div class="section-tag">Client Love</div>
+    <h2 class="section-title">What Our Clients <em>Say</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal" style="transition-delay:0.1s">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">I've tried so many skin clinics, but Dermis Darling genuinely changed my skin. After just four sessions, my hyperpigmentation has faded dramatically. The experience itself feels like pure luxury.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Sara M.</div>
+          <div class="author-tag">Glow Package Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:0.15s">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">The therapists here are absolutely incredible. They took time to understand my sensitive skin before doing anything. I felt so taken care of. My skin has never looked this calm and bright.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">A</div>
+        <div>
+          <div class="author-name">Aisha R.</div>
+          <div class="author-tag">Radiance Ritual Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:0.2s">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">I came in for acne and left with a completely new relationship with my skin. The acne clarity facial is unreal. My breakouts cleared within weeks. Worth every single penny and more.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">Z</div>
+        <div>
+          <div class="author-name">Zara T.</div>
+          <div class="author-tag">Acne Clarity Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about">
+  <div class="about-image reveal">
+    <img src="https://images.unsplash.com/photo-1601049541271-ea3f4e3c843a?w=800&q=80" alt="Dermis Darling skin care studio" />
+    <div class="about-image-accent">
+      <p class="accent-text">Est. 2017<br>Your Skin<br>Sanctuary</p>
+    </div>
+  </div>
+  <div class="reveal" style="transition-delay:0.15s">
+    <div class="section-tag">Our Story</div>
+    <h2 class="section-title">Born from a<br>Passion for <em>Healthy Skin</em></h2>
+    <p class="about-lead">"I started Dermis Darling because I believed everyone deserves to feel truly comfortable in their own skin."</p>
+    <p class="about-body">Dermis Darling was founded with one simple belief: skincare should be both effective and deeply enjoyable. We built a sanctuary where science meets serenity — where every treatment is rooted in clinical evidence and delivered with genuine care.<br><br>Our studio is designed to feel like a retreat. Every product we use, every technique we employ, and every experience we create is chosen with your skin's long-term health at heart. We don't chase trends — we chase results.</p>
+    <div class="mission-vision">
+      <div class="mv-card">
+        <h4>Our Mission</h4>
+        <p>To make professional, results-driven skincare accessible to everyone while maintaining an unwavering standard of luxury and expertise.</p>
+      </div>
+      <div class="mv-card">
+        <h4>Our Vision</h4>
+        <p>A world where every person feels radiant in their own skin — confident, cared for, and fully themselves.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section id="faq">
+  <div class="reveal">
+    <div class="section-tag">Questions & Answers</div>
+    <h2 class="section-title">Frequently <em>Asked</em></h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How do I know which treatment is right for me?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Every visit starts with a skin analysis consultation where our therapist assesses your skin type, concerns, and goals. We then recommend the ideal treatment plan — no guesswork, no pressure.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Is there any downtime after treatments?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Most of our treatments have little to no downtime. Chemical peels may cause mild redness or peeling for 2–5 days. We provide full aftercare instructions and guidance tailored to your specific treatment.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How many sessions will I need to see results?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Many clients notice visible improvements after just one session. For deeper concerns like pigmentation or acne scarring, we typically recommend a 4–8 session program for optimal, lasting results.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Are your products safe for sensitive skin?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Absolutely. We carry a curated range of products suited to all skin types, including reactive and sensitive skin. We always conduct a patch test and discuss any allergies or sensitivities before treatment begins.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Do you offer gift vouchers?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>Yes! Our gift vouchers are beautifully presented and make the most indulgent gift imaginable. Available for any dollar amount or specific treatment — perfect for birthdays, anniversaries, or simply showing someone you care.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What is your cancellation policy?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>We kindly ask for 24 hours notice for cancellations or rescheduling. Late cancellations or no-shows may incur a 50% charge of the treatment price. We appreciate your understanding in helping us serve all clients well.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA BANNER
+     ============================================================ -->
+<section id="cta-banner">
+  <div class="reveal">
+    <div class="section-tag" style="text-align:center">Ready to Begin?</div>
+    <h2 class="section-title">Your Best Skin<br>Starts <em>Today</em></h2>
+    <p class="section-subtitle">Book a consultation and take the first step toward radiant, healthy skin — you deserve it.</p>
+    <div class="cta-actions">
+      <a href="#contact" class="btn-primary">Book a Consultation →</a>
+      <a href="mailto:contactglanders@gmail.com" class="btn-secondary">Email Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title">Book Your <em>Appointment</em></h2>
+    <p class="section-subtitle">Ready to start your skin care journey? Fill in the form and we'll be in touch within 24 hours.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info reveal" style="transition-delay:0.1s">
+      <h3>We'd love<br>to hear from you.</h3>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉</div>
+        <div class="contact-item-text">
+          <p>Email</p>
+          <p><a href="mailto:contactglanders@gmail.com">contactglanders@gmail.com</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-text">
+          <p>Phone</p>
+          <p>+1 (555) 000-0000</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div class="contact-item-text">
+          <p>Studio Location</p>
+          <p>123 Serenity Lane, Your City</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🕐</div>
+        <div class="contact-item-text">
+          <p>Studio Hours</p>
+          <p>Mon–Sat: 9am – 7pm<br>Sun: 10am – 4pm</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal" style="transition-delay:0.2s">
+      <form action="mailto:contactglanders@gmail.com" method="post" enctype="text/plain" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="first_name" required placeholder="Your first name" />
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="last_name" placeholder="Your last name" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="service">Service of Interest</label>
+          <select id="service" name="service">
+            <option value="">Select a treatment…</option>
+            <option>Signature Facial</option>
+            <option>Chemical Peel</option>
+            <option>LED Light Therapy</option>
+            <option>Hydrodermabrasion</option>
+            <option>Anti-Aging Ritual</option>
+            <option>Acne Clarity Facial</option>
+            <option>Not sure — I need a consultation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Anything you'd like us to know?</label>
+          <textarea id="message" name="message" placeholder="Tell us about your skin concerns, goals, or questions…"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">Dermis <span style="color:var(--sage-light)">Darling</span></div>
+      <p>A luxury skin care studio dedicated to helping you achieve your healthiest, most radiant skin through science-backed treatments and genuine care.</p>
+      <div class="social-links">
+        <a class="social-link" href="#" aria-label="Instagram">IG</a>
+        <a class="social-link" href="#" aria-label="Facebook">FB</a>
+        <a class="social-link" href="#" aria-label="TikTok">TK</a>
+        <a class="social-link" href="#" aria-label="Pinterest">PT</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Treatments</h5>
+      <a href="#services">Signature Facial</a>
+      <a href="#services">Chemical Peel</a>
+      <a href="#services">LED Therapy</a>
+      <a href="#services">Hydrodermabrasion</a>
+      <a href="#services">Anti-Aging Ritual</a>
+      <a href="#services">Acne Clarity</a>
+    </div>
+    <div class="footer-col">
+      <h5>Studio</h5>
+      <a href="#about">Our Story</a>
+      <a href="#packages">Packages</a>
+      <a href="#testimonials">Client Reviews</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Book Now</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <a href="mailto:contactglanders@gmail.com">contactglanders@gmail.com</a>
+      <a href="tel:+15550000000">+1 (555) 000-0000</a>
+      <a href="#contact">123 Serenity Lane<br>Your City</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Dermis Darling. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+  // --- LOADER ---
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 1200);
+  });
+
+  // --- NAVBAR SCROLL ---
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // --- MOBILE MENU ---
+  function toggleMobile() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMobile() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // --- REVEAL ON SCROLL ---
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // --- COUNTER ANIMATION ---
+  function animateCounter(el) {
+    const target = +el.dataset.target;
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current).toLocaleString() + (target >= 100 && el.parentElement.querySelector('.stat-label').textContent.includes('%') ? '%' : '');
+    }, 16);
+  }
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(e.target);
+        counterObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+  // --- FAQ ACCORDION ---
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // --- FORM SUBMIT ---
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.textContent = 'Thank you! We\'ll be in touch soon. ✦';
+    btn.style.background = 'var(--blue-muted)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      e.target.reset();
+    }, 4000);
+  }
+</script>
+</body>
+</html>
